@@ -63,12 +63,12 @@ const runScript = function runScript (scriptName, args) {
 	});
 };
 
-const read = function read (interfacesFilePath, interfaceName) {
+const read = function read (interfacesFilePath, scriptPath, interfaceName) {
   interfacesFilePath = interfacesFilePath || DEFAULT_INTERFACE_FILE_LOCATION;
   interfaceName = interfaceName || DEFAULT_INTERFACE;
 
   return new Promise((resolve, reject) => {
-    runScript(READ_SCRIPT_PATH, [interfacesFilePath, `device=${interfaceName}`].join(' '))
+    runScript(scriptPath || READ_SCRIPT_PATH, [interfacesFilePath, `device=${interfaceName}`].join(' '))
       .then((success) => {
          resolve(formatResult(success));
       }).catch((error) => {
@@ -78,7 +78,7 @@ const read = function read (interfacesFilePath, interfaceName) {
   
 };
 
-const write = function write (interfacesFilePath, interfaceName, args) {
+const write = function write (interfacesFilePath, scriptPath, interfaceName, args) {
   interfacesFilePath = interfacesFilePath || DEFAULT_INTERFACE_FILE_LOCATION;
   interfaceName = interfaceName || DEFAULT_INTERFACE;
 
@@ -86,7 +86,7 @@ const write = function write (interfacesFilePath, interfaceName, args) {
     args.device = interfaceName;
     const formattedArgs = convertArgsForScript(interfacesFilePath, args);
 
-    runScript(WRITE_SCRIPT_PATH, formattedArgs)
+    runScript(scriptPath || WRITE_SCRIPT_PATH, formattedArgs)
       .then((newText) => {
         writeToFile(interfacesFilePath, newText).then((success) => {
           resolve(args);

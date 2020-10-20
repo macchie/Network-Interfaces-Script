@@ -2,15 +2,17 @@
 const scriptRunner = require('./script-runner.js');
 
 module.exports = class NetworkInterface {
-	constructor (interfacesFilePath) {
+	constructor (interfacesFilePath, readScriptPath, writeScriptPath) {
 		this.interfacesFilePath = interfacesFilePath;
+		this.readScriptPath = readScriptPath;
+		this.writeScriptPath = writeScriptPath;
 	}
 
 	currentConfig (interfaceName) {
-		return scriptRunner.read(this.interfacesFilePath, interfaceName);
+		return scriptRunner.read(this.interfacesFilePath, this.readScriptPath, interfaceName);
 	}
 
 	setConfig (interfaceName, settings) {
-		return scriptRunner.write(this.interfacesFilePath, interfaceName, settings);
+		return scriptRunner.write(this.interfacesFilePath, this.writeScriptPath, interfaceName, settings);
 	}
 }
